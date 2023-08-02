@@ -25,7 +25,7 @@ SECRET_KEY = '9i@eypz_0sws=2^a8$-ne)&jc0b6a1^#&-r%9#-1nh&x($g*5*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'backend']
 
 
 # Application definition
@@ -39,17 +39,41 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'recipes.apps.RecipesConfig',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+    'api.apps.ApiConfig',
+    'django_filters',
     'import_export',
+    'corsheaders',
+    'api.users_logic.apps.UsersLogicConfig',
+    'api.tag_logic.apps.TagLogicConfig',
+    'api.ingredient_logic.apps.IngredientLogicConfig',
+    'api.utils_logic.apps.UtilsLogicConfig',
+    'api.urls_logic.apps.UrlsLogicConfig',
+    'api.recipes_logic.apps.RecipesLogicConfig',
 ]
-
+# DANGER!! При регистрации вложенных приложений не забывать добавлять в apps путь api, а то все начинает сыпаться
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:7000',
+    'http://127.0.0.1:7000'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:7000',
+    'http://127.0.0.1:7000'
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -72,17 +96,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
+# Пока не уверен в моделях оставляю настройки sqllite чтоб можно было локально быстро проверить миграции!!
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', 'postgres'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': os.getenv('DB_PORT', '5432')
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -121,6 +154,43 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# Таким образом мы говорим джано что используем свою модель пользователя
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Пути по апп/медиа создают вложенность и не отрабатывают, не забыть проверить nginx и copose
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Таким образом мы говорим джанго что используем свою модель пользователя
 AUTH_USER_MODEL = 'users.User'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 6,
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'HIDE_USERS': False,
+    'SERIALIZERS': {
+        'user_create': 'api.users_logic.serializers.UserSignUpSerializer',
+        'user': 'api.users_logic.serializers.UserInfoSerializer',
+        'current_user': 'api.users_logic.serializers.UserInfoSerializer',
+    },
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.AllowAny'],
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+    }
+}
+
+# Переменная для работы с модулем импортов.
+IMPORT_EXPORT_USE_TRANSACTIONS = True
