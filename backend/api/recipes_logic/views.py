@@ -6,12 +6,11 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from api.utils_logic.filters import RecipeFilter
 from api.recipes_logic.serializers import (FavoriteSerializer,
-                             RecipeCreateSerializer,
-                             RecipeGetSerializer, ShoppingCartSerializer)
+                                           RecipeCreateSerializer,
+                                           RecipeGetSerializer,
+                                           ShoppingCartSerializer)
 from api.utils_logic.utilit import create_model_instance, delete_model_instance
 from recipes.models import Favorite, Recipe, RecipeIngredient, ShoppingCart
-
-
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -50,11 +49,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Работа со списком покупок."""
         recipe = get_object_or_404(Recipe, id=pk)
         if request.method == 'POST':
-            return create_model_instance(request, recipe, ShoppingCartSerializer)
+            return create_model_instance(request,
+                                         recipe, ShoppingCartSerializer)
 
         if request.method == 'DELETE':
             return delete_model_instance(request, ShoppingCart, recipe)
-    
+
     @action(
         detail=False,
         methods=['get'],
@@ -76,6 +76,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 for ingredient in ingredients
             )
         )
+        file_name = 'Мои покупки'
         response = HttpResponse(result, content_type='text/plain')
-        response['Content-Disposition'] = f'attachment; filename="Моя корзина"'
+        response['Content-Disposition'] = f'attachment; filename={file_name}'
         return response

@@ -1,17 +1,22 @@
 from django.db import transaction
 from rest_framework import serializers
 from api.utils_logic.utilit import create_ingredients
-from recipes.models import Favorite, Recipe, RecipeIngredient, ShoppingCart, Tag
+from recipes.models import (Favorite, Recipe,
+                            RecipeIngredient, ShoppingCart, Tag)
 from api.tag_logic.serializers import TagSerialiser
-from api.users_logic.serializers import UserInfoSerializer, RecipeShortInfoSerializer
-from api.ingredient_logic.serializers import IngredientRecipeSerializer, IngredientAddSerializer
+from api.users_logic.serializers import (UserInfoSerializer,
+                                         RecipeShortInfoSerializer)
+from api.ingredient_logic.serializers import (IngredientRecipeSerializer,
+                                              IngredientAddSerializer)
 from drf_extra_fields.fields import Base64ImageField
+
 
 class RecipeGetSerializer(serializers.ModelSerializer):
     """Сериализатор для получения информации о рецепте."""
     tags = TagSerialiser(many=True, read_only=True)
     author = UserInfoSerializer(read_only=True)
-    ingredients = IngredientRecipeSerializer(many=True, read_only=True, source='recipeingredients')
+    ingredients = IngredientRecipeSerializer(many=True, read_only=True,
+                                             source='recipeingredients')
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
     image = Base64ImageField()
@@ -39,8 +44,10 @@ class RecipeGetSerializer(serializers.ModelSerializer):
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
     """Сериализатор для добаления/обновления рецепта."""
-    ingredients = IngredientAddSerializer(many=True, source='recipeingredients')
-    tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(),many=True)
+    ingredients = IngredientAddSerializer(many=True,
+                                          source='recipeingredients')
+    tags = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(), many=True)
     image = Base64ImageField()
 
     class Meta:

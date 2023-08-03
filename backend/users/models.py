@@ -4,14 +4,15 @@ from django.db import models
 
 class User(AbstractUser):
     """Создаю класс для собственной модели пользователя"""
-    username = models.CharField('Имя пользователя', max_length=150, unique=True)
+    username = models.CharField('Имя пользователя',
+                                max_length=150, unique=True
+                                )
     email = models.EmailField('Электронная почта',
-        max_length=254,
-        unique=True,
-    )
+                              max_length=254, unique=True,
+                              )
     first_name = models.CharField('Имя', max_length=150)
     last_name = models.CharField('Фамилия', max_length=150)
-    password = models.CharField('Пароль',max_length=150)
+    password = models.CharField('Пароль', max_length=150)
 
     class Meta:
         ordering = ['id']
@@ -20,20 +21,18 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
 
 class Subscription(models.Model):
     """Создаю класс для подписки пользователей на авторов"""
-    user = models.ForeignKey(User,
-        on_delete=models.CASCADE,
-        related_name='follower',
-        verbose_name='Пользователь',
-    )
-    author = models.ForeignKey(User,
-        on_delete=models.CASCADE,
-        related_name='following',
-        verbose_name='Автор',
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='follower',
+                             verbose_name='Пользователь',
+                             )
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               related_name='following',
+                               verbose_name='Автор',
+                               )
 
     class Meta:
         constraints = [

@@ -13,7 +13,8 @@ class IngredientRecipeSerializer(serializers.ModelSerializer):
     """Сериализатор для получения информации об ингредиентах."""
     id = serializers.IntegerField(source='ingredient.id')
     name = serializers.CharField(source='ingredient.name')
-    measurement_unit = serializers.CharField(source='ingredient.measurement_unit')
+    measurement_unit = serializers.CharField(
+        source='ingredient.measurement_unit')
 
     class Meta:
         model = RecipeIngredient

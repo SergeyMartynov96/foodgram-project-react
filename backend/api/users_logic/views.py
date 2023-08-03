@@ -3,7 +3,8 @@ from users.models import Subscription, User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.users_logic.serializers import UserSubRepresentSerializer, UserSubSerializer
+from api.users_logic.serializers import (UserSubRepresentSerializer,
+                                         UserSubSerializer)
 from api.utils_logic.mixins import CreateCastomView
 
 
@@ -37,5 +38,6 @@ class UserSubscribeView(APIView):
 class UserSubscriptionsViewSet(CreateCastomView):
     """Вью для получение списка подписок на пользователей."""
     serializer_class = UserSubRepresentSerializer
+
     def get_queryset(self):
         return User.objects.filter(following__user=self.request.user)

@@ -59,7 +59,7 @@ class UserSubRepresentSerializer(UserInfoSerializer):
         if recipes_limit:
             recipes = obj.recipes.all()[:int(recipes_limit)]
         return RecipeShortInfoSerializer(recipes, many=True,
-                                     context={'request': request}).data
+                                         context={'request': request}).data
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()

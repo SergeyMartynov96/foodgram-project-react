@@ -5,8 +5,8 @@ from users.models import User
 
 class Ingredient(models.Model):
     """Модель ингредиентов"""
-    name = models.CharField('Ингредиент', max_length=100)
-    measurement_unit = models.CharField('Единица измерения', max_length=100)
+    name = models.CharField('Ингредиент', max_length=150)
+    measurement_unit = models.CharField('Единица измерения', max_length=150)
 
     class Meta:
         verbose_name = 'Ингридиент'
@@ -18,9 +18,9 @@ class Ingredient(models.Model):
 
 class Tag(models.Model):
     """Модель тегов"""
-    name = models.CharField('Тег', max_length=200)
+    name = models.CharField('Тег', max_length=150)
     color = models.CharField('Цвет', max_length=7)
-    slug = models.SlugField('Адрес', max_length=200, unique=True)
+    slug = models.SlugField('Адрес', max_length=150, unique=True)
 
     class Meta:
         verbose_name = 'Тег'
@@ -28,7 +28,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class Recipe(models.Model):
     author = models.ForeignKey(
@@ -36,7 +36,7 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Автор',
     )
-    name = models.CharField('Название', max_length=200)
+    name = models.CharField('Название', max_length=150)
     image = models.ImageField(
         'Картинка',
         upload_to='',
@@ -65,7 +65,7 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class RecipeIngredient(models.Model):
     """Модель ингридиентов определенного рецепта"""
@@ -95,7 +95,7 @@ class RecipeIngredient(models.Model):
 
     def __str__(self):
         return f'{self.recipe} - {self.ingredient}'
- 
+
 
 class Favorite(models.Model):
     """Модель избранного рецепта"""
