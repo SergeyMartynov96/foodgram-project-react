@@ -1,11 +1,11 @@
 from django.shortcuts import get_object_or_404
-from users.models import Subscription, User
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.users_logic.serializers import (UserSubRepresentSerializer,
-                                         UserSubSerializer)
+
+from api.user_serializers import UserSubRepresentSerializer, UserSubSerializer
 from api.utils_logic.mixins import CreateCastomView
+from users.models import Subscription, User
 
 
 class UserSubscribeView(APIView):

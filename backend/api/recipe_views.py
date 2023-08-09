@@ -1,14 +1,14 @@
 from django.db.models import Sum
-from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import HttpResponse, get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+
+from api.recipe_serializers import (FavoriteSerializer, RecipeCreateSerializer,
+                                    RecipeGetSerializer,
+                                    ShoppingCartSerializer)
 from api.utils_logic.filters import RecipeFilter
-from api.recipes_logic.serializers import (FavoriteSerializer,
-                                           RecipeCreateSerializer,
-                                           RecipeGetSerializer,
-                                           ShoppingCartSerializer)
 from api.utils_logic.utilit import create_model_instance, delete_model_instance
 from recipes.models import Favorite, Recipe, RecipeIngredient, ShoppingCart
 

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from recipes.models import Ingredient, RecipeIngredient
 
 
@@ -6,7 +7,7 @@ class IngredientInfoSerializer(serializers.ModelSerializer):
     """Сериализатор для работы с ингредиентами."""
     class Meta:
         model = Ingredient
-        fields = '__all__'
+        fields = ('id', 'name', 'measurement_unit')
 
 
 class IngredientRecipeSerializer(serializers.ModelSerializer):

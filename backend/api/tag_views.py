@@ -1,7 +1,8 @@
 from rest_framework import viewsets
-from recipes.models import Tag
-from api.tag_logic.serializers import TagSerialiser
 from rest_framework.permissions import AllowAny
+
+from api.tag_serializers import TagSerialiser
+from recipes.models import Tag
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
