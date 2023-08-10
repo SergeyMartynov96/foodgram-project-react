@@ -6,7 +6,7 @@ from api.ingredient_serializers import (IngredientAddSerializer,
                                         IngredientRecipeSerializer)
 from api.tag_serializers import TagSerialiser
 from api.user_serializers import RecipeShortInfoSerializer, UserInfoSerializer
-from api.utils_logic.utilit import create_ingredients
+from api.utilit import create_ingredients
 from recipes.models import (Favorite, Recipe, RecipeIngredient, ShoppingCart,
                             Tag)
 

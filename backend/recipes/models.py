@@ -32,7 +32,8 @@ class Tag(models.Model):
     name = models.CharField(verbose_name='Тег',
                             max_length=settings.MAX_LENGTH_RECIPE)
     color = ColorField(format='hex',
-                       verbose_name='Цвет', help_text='Введите цвет тега')
+                       verbose_name='Цвет', help_text='Введите цвет тега',
+                       unique=True)
     slug = models.SlugField(verbose_name='Адрес',
                             max_length=settings.MAX_LENGTH_RECIPE, unique=True)
 
@@ -76,7 +77,7 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        ordering = ['name']
+        ordering = ('name',)
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 

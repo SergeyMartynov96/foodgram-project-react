@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'django_filters',
     'import_export',
     'corsheaders',
-    'api.utils_logic.apps.UtilsLogicConfig',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +153,4 @@ MAX_LENGTH = 150
 MAX_LENGTH_EM = 254
 MAX_LENGTH_RECIPE = 200
 MAX_LENGTH_COLOR = 7
+EMPTY_VALUE = '-пусто-'

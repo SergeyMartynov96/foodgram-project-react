@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
@@ -10,6 +11,7 @@ class TagAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('pk', 'name', 'color', 'slug')
     search_fields = ('name', 'color', 'slug')
     list_filter = ('name', 'color', 'slug')
+    empty_value_display = settings.EMPTY_VALUE
 
 
 @admin.register(Ingredient)
@@ -17,6 +19,7 @@ class IngredientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('pk', 'name', 'measurement_unit')
     search_fields = ('name',)
     list_filter = ('name',)
+    empty_value_display = settings.EMPTY_VALUE
 
 
 class RecipeIngredientInline(admin.TabularInline):

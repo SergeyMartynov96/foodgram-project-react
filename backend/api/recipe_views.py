@@ -5,11 +5,11 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
+from api.filters import RecipeFilter
 from api.recipe_serializers import (FavoriteSerializer, RecipeCreateSerializer,
                                     RecipeGetSerializer,
                                     ShoppingCartSerializer)
-from api.utils_logic.filters import RecipeFilter
-from api.utils_logic.utilit import create_model_instance, delete_model_instance
+from api.utilit import create_model_instance, delete_model_instance
 from recipes.models import Favorite, Recipe, RecipeIngredient, ShoppingCart
 
 
