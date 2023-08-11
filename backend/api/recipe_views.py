@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 from api.filters import RecipeFilter
+from api.permissions import IsAdminAuthorOrReadOnly
 from api.recipe_serializers import (FavoriteSerializer, RecipeCreateSerializer,
                                     RecipeGetSerializer,
                                     ShoppingCartSerializer)
@@ -16,7 +17,7 @@ from recipes.models import Favorite, Recipe, RecipeIngredient, ShoppingCart
 class RecipeViewSet(viewsets.ModelViewSet):
     """Работа с рецептами. Создание/изменение/удаление рецепта."""
     queryset = Recipe.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAdminAuthorOrReadOnly, )
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
     http_method_names = ['get', 'post', 'patch', 'delete']
