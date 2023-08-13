@@ -52,7 +52,7 @@ class Recipe(models.Model):
         verbose_name='Автор',
     )
     name = models.CharField(verbose_name='Название',
-                            max_length=settings.MAX_LENGTH_RECIPE)
+                            max_length=settings.MAX_LENGTH_RECIPE,)
     image = models.ImageField(
         verbose_name='Картинка',
         upload_to='',

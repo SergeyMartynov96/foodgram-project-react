@@ -7,6 +7,7 @@ from api.ingredient_serializers import (IngredientAddSerializer,
 from api.tag_serializers import TagSerialiser
 from api.user_serializers import RecipeShortInfoSerializer, UserInfoSerializer
 from api.utilit import create_ingredients
+from api.validators import validate_recipe_name
 from recipes.models import (Favorite, Recipe, RecipeIngredient, ShoppingCart,
                             Tag)
 
@@ -49,6 +50,10 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(), many=True)
     image = Base64ImageField()
     cooking_time = serializers.IntegerField()
+    name = serializers.CharField(
+        max_length=50,
+        validators=[validate_recipe_name],
+    )
 
     class Meta:
         model = Recipe
